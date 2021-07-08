@@ -1,0 +1,126 @@
+<div class="container">
+  <form class="card" [formGroup]="form" (ngSubmit)="submit()">
+    <h1>Angular Forms</h1>
+
+    <div class="form-control">
+      <label>Name</label>
+      <input type="text" placeholder="Name" formControlName="name" />
+
+      <div
+        *ngIf="form.get('name').invalid && form.get('name').touched"
+        class="validation"
+      >
+        <small *ngIf="form.get('name').errors.required">
+          Поле Name не может быть пустым
+        </small>
+      </div>
+    </div>
+
+    <div class="form-control">
+      <label>Surname</label>
+      <input type="text" placeholder="Surname" formControlName="surname" />
+
+      <div
+        *ngIf="form.get('surname').invalid && form.get('surname').touched"
+        class="validation"
+      >
+        <small *ngIf="form.get('surname').errors.required">
+          Поле Surname не может быть пустым
+        </small>
+      </div>
+    </div>
+
+    <div class="form-control">
+      <label>Email</label>
+      <input type="text" placeholder="Email" formControlName="email" />
+
+      <div
+        *ngIf="form.get('email').invalid && form.get('email').touched"
+        class="validation"
+      >
+        <small *ngIf="form.get('email').errors.required">
+          Поле Email не может быть пустым
+        </small>
+
+        <small *ngIf="form.get('email').errors.email">
+          Введите корректный Email
+        </small>
+
+        <small *ngIf="form.get('email').errors.restrictedEmail">
+          Email {{ form.get("email").value }} запрещен
+        </small>
+
+        <small *ngIf="form.get('email').errors.uniqEmail">
+          Email {{ form.get("email").value }} занят
+        </small>
+      </div>
+    </div>
+
+    <div class="card" formGroupName="technology">
+      <h2>Technology</h2>
+
+      <div class="form-control">
+        <label>Framework</label>
+
+        <select formControlName="framework">
+          <option value="angular">Angular</option>
+          <option value="react">React</option>
+          <option value="vue">Vue</option>
+        </select>
+      </div>
+
+      <div class="form-control">
+        <label>Framework version</label>
+
+        <select formControlName="framework">
+          <option
+            [selected]="frameworks"
+            *ngFor="let i of frameworkVersions.angular"
+            [value]="i"
+          >
+            {{ i }}
+          </option>
+
+          <!-- <option
+            [selected]="frameworks.react"
+            *ngFor="let i of frameworkVersions"
+            [value]="i"
+          >
+            {{ i }}
+          </option>
+
+          <option
+            [selected]="frameworks.vue"
+            *ngFor="let i of frameworkVersions"
+            [value]="i"
+          >
+            {{ i }}
+          </option> -->
+        </select>
+      </div>
+
+      <button class="btn" type="button" (click)="setVersion()">
+        Выбрать столицу
+      </button>
+    </div>
+
+    <div class="card" formGroupName="skills">
+      <h2>Ваши навыки</h2>
+      <button class="btn" type="button" (click)="addSkill()">
+        Добавить умение
+      </button>
+
+      <div
+        class="form-control"
+        *ngFor="let control of form.get('skills').controls; let idx = index"
+      >
+        <label>Умение {{ idx + 1 }}</label>
+        <input type="text" [formControlName]="idx" />
+      </div>
+    </div>
+
+    <button class="btn" type="submit" [disabled]="form.invalid || form.pending">
+      Отправить
+    </button>
+  </form>
+</div>
